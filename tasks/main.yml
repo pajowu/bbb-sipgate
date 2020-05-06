@@ -1,0 +1,39 @@
+---
+- name: copy sip config file
+  template:
+    src: sipgate-team-trunk.xml.j2
+    dest: /opt/freeswitch/conf/sip_profiles/external/sipgate.xml
+  notify: restart freeswitch
+
+- name: set sip config permissions
+  file:
+    path: /opt/freeswitch/conf/sip_profiles/external/sipgate.xml
+    owner: freeswitch
+    group: daemon
+
+- name: copy sip dialplan
+  template:
+    src: sipgate-dialplan.xml.j2
+    dest: /opt/freeswitch/conf/dialplan/public/sipgate.xml
+  notify: restart freeswitch
+
+- name: set sip dialplan permissions
+  file:
+    path: /opt/freeswitch/conf/dialplan/public/sipgate.xml
+    owner: freeswitch
+    group: daemon
+
+- name: Set sipgate number
+  lineinfile:
+    path: /usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
+    regexp: '^defaultDialAccessNumber='
+    line: defaultDialAccessNumber={{ sipgate_call_number }}
+  notify: restart bigbluebutton
+
+- name: Set defaultWelcomeMessageFooter
+  lineinfile:
+    path: /usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
+    regexp: '^defaultWelcomeMessageFooter='
+    line: "defaultWelcomeMessageFooter={{ sipgate_footer }}"
+  notify: restart bigbluebutton
+  when: sipgate_footer != ""

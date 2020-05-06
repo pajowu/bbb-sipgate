@@ -1,0 +1,9 @@
+---
+- name: restart bigbluebutton
+  command: bbb-conf --restart
+  become: yes
+
+- name: restart freeswitch
+  systemd:
+    name: freeswitch.service
+    state: restarted

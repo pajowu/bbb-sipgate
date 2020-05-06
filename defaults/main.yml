@@ -1,0 +1,8 @@
+---
+sipgate_gateway_name: sipgate.de
+sipgate_proxy_value: {{ sipgate_gateway_name }}
+sipgate_username: ""
+sipgate_password: ""
+sipgate_destination_number: "^{{ sipgate_username}}"
+sipgate_call_number: ""
+sipgate_footer: "<br><br>To join this meeting by phone, dial:<br>  %%DIALNUM%%<br>Then enter %%CONFNUM%% as the conference PIN number."
